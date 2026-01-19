@@ -98,7 +98,7 @@ jobs:
         # Excludes UI rendering code (main.rs, render.rs, layout.rs, overlays.rs) that requires terminal mocks
         run: cargo llvm-cov --all-features --fail-under-lines 85 --ignore-filename-regex '(main|render|layout|overlays)\.rs' --codecov --output-path codecov.json
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: codecov.json
           fail_ci_if_error: false
