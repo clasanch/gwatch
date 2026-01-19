@@ -19,7 +19,7 @@ crossterm = "0.28"
 
 # File Watching
 notify = "8"
-notify-debouncer-mini = "0.5"
+notify-debouncer-mini = "0.7"
 
 # Git Integration
 git2 = "0.20"
