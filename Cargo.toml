@@ -39,7 +39,7 @@ dirs = "6"
 clap = { version = "4", features = ["derive"] }
 
 # Path Handling / Gitignore
-ignore = "=0.4.22"
+ignore = "=0.4.25"
 
 # Logging
 tracing = "0.1"
