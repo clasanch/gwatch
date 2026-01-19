@@ -21,6 +21,32 @@ Real-time Git-powered directory monitor with line-by-line diff visualization.
 
 ## Installation
 
+## Development Setup 
+
+### Pre-requisites 
+
+```bash 
+# Install git hook manager 
+brew install lefthook 
+
+# Install Rust tools 
+cargo install cargo-llvm-cov cargo-audit cargo-deny 
+rustup component add llvm-tools-preview 
+``` 
+
+### Enable Git Hooks 
+
+```bash 
+lefthook install 
+``` 
+
+This enables automatic checks: 
+- **Pre-commit:** Format and lint validation 
+- **Pre-push:** Tests, 85% coverage, security audit 
+
+See [AGENTS.md](AGENTS.md) for complete developer documentation. 
+
+
 ```bash
 # From source
 cargo install --path .

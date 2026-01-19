@@ -40,7 +40,7 @@ pub enum DiffViewerType {
 
 impl DiffViewerType {
     #[allow(dead_code)]
-    pub fn from_str(s: &str) -> Self {
+    pub fn parse_from_str(s: &str) -> Self {
         match s.to_lowercase().as_str() {
             "delta" => Self::Delta,
             "difftastic" | "difft" => Self::Difftastic,
@@ -208,16 +208,22 @@ mod tests {
 
     #[test]
     fn test_diff_viewer_type_from_str() {
-        assert_eq!(DiffViewerType::from_str("delta"), DiffViewerType::Delta);
         assert_eq!(
-            DiffViewerType::from_str("difftastic"),
+            DiffViewerType::parse_from_str("delta"),
+            DiffViewerType::Delta
+        );
+        assert_eq!(
+            DiffViewerType::parse_from_str("difftastic"),
             DiffViewerType::Difftastic
         );
         assert_eq!(
-            DiffViewerType::from_str("internal"),
+            DiffViewerType::parse_from_str("internal"),
             DiffViewerType::Internal
         );
-        assert_eq!(DiffViewerType::from_str("auto"), DiffViewerType::Auto);
-        assert_eq!(DiffViewerType::from_str("unknown"), DiffViewerType::Auto);
+        assert_eq!(DiffViewerType::parse_from_str("auto"), DiffViewerType::Auto);
+        assert_eq!(
+            DiffViewerType::parse_from_str("unknown"),
+            DiffViewerType::Auto
+        );
     }
 }

@@ -419,3 +419,58 @@ mod tests {
         assert!(result.y > 0);
     }
 }
+
+#[cfg(test)]
+mod extra_tests {
+    use super::*;
+
+    #[test]
+    fn test_centered_rect_100_100() {
+        let parent = Rect::new(0, 0, 100, 100);
+        let result = centered_rect(100, 100, parent);
+
+        assert_eq!(result.x, 0);
+        assert_eq!(result.y, 0);
+        assert_eq!(result.width, 100);
+        assert_eq!(result.height, 100);
+    }
+
+    #[test]
+    fn test_centered_rect_asymmetric() {
+        let parent = Rect::new(0, 0, 100, 50);
+        let result = centered_rect(60, 80, parent);
+
+        // Width should be ~60% of 100 = 60
+        assert!(result.width >= 55 && result.width <= 65);
+        // Height should be ~80% of 50 = 40
+        assert!(result.height >= 35 && result.height <= 45);
+    }
+
+    #[test]
+    fn test_centered_rect_with_offset_parent() {
+        let parent = Rect::new(10, 20, 100, 100);
+        let result = centered_rect(50, 50, parent);
+
+        // Should be centered within parent, accounting for offset
+        assert!(result.x >= 30); // 10 + ~25
+        assert!(result.y >= 40); // 20 + ~25
+    }
+
+    #[test]
+    fn test_centered_rect_very_small() {
+        let parent = Rect::new(0, 0, 10, 10);
+        let result = centered_rect(50, 50, parent);
+
+        assert!(result.width > 0);
+        assert!(result.height > 0);
+    }
+
+    #[test]
+    fn test_centered_rect_zero_parent() {
+        let parent = Rect::new(0, 0, 0, 0);
+        let result = centered_rect(50, 50, parent);
+
+        assert_eq!(result.width, 0);
+        assert_eq!(result.height, 0);
+    }
+}

@@ -1,0 +1,71 @@
+# Lefthook configuration
+# https://github.com/evilmartians/lefthook
+
+assert_lefthook_installed: true
+colors: true
+no_tty: false
+
+# ==============================================================================
+# PRE-COMMIT HOOKS (Fast: target <5 seconds)
+# ==============================================================================
+pre-commit:
+  parallel: true
+  commands:
+    fmt-check:
+      glob: "*.rs"
+      run: cargo fmt --all -- --check
+      fail_text: "Formatting check failed. Run 'cargo fmt --all' to fix."
+
+    clippy-lint:
+      glob: "*.rs"
+      run: cargo clippy --all-targets -- -D warnings
+      fail_text: "Clippy found issues. Fix warnings before committing."
+
+# ==============================================================================
+# PRE-PUSH HOOKS (Thorough: target <5 minutes)
+# ==============================================================================
+pre-push:
+  parallel: false
+  piped: true
+  commands:
+    # Priority 1: Quick checks first
+    fmt-verify:
+      priority: 1
+      run: cargo fmt --all -- --check
+      fail_text: "Format check failed."
+
+    clippy-strict:
+      priority: 1
+      run: cargo clippy --all-targets --all-features -- -D warnings
+      fail_text: "Clippy check failed."
+
+    # Priority 2: Build verification
+    build-check:
+      priority: 2
+      run: cargo build --release
+      fail_text: "Release build failed."
+
+    # Priority 3: Test suite
+    test-all:
+      priority: 3
+      run: cargo test --all-features --no-fail-fast
+      fail_text: "Tests failed."
+
+    # Priority 4: Coverage enforcement (85% threshold)
+    # Excludes UI rendering code that requires terminal mocks
+    coverage:
+      priority: 4
+      run: cargo llvm-cov --all-features --fail-under-lines 85 --ignore-filename-regex '(main|render|layout|overlays)\.rs'
+      fail_text: "Coverage below 85%. Add more tests."
+
+    # Priority 5: Security checks
+    audit:
+      priority: 5
+      run: cargo audit
+      fail_text: "Security vulnerabilities found."
+
+    # Disabled until cargo-deny is properly installed
+    # deny:
+    #   priority: 5
+    #   run: cargo deny check
+    #   fail_text: "Dependency policy violations found."

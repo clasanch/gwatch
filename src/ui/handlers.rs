@@ -231,7 +231,7 @@ fn handle_settings_editor_keys(app: &mut App, key: KeyEvent) -> Result<()> {
     Ok(())
 }
 
-fn get_cursor_position(content: &str, line: usize, col: usize) -> usize {
+pub fn get_cursor_position(content: &str, line: usize, col: usize) -> usize {
     let mut pos = 0;
     for (i, l) in content.lines().enumerate() {
         if i == line {

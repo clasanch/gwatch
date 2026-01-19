@@ -20,7 +20,7 @@ pub struct DiffStats {
     pub deleted_count: usize,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DiffHunk {
     pub old_start: usize,
     pub old_count: usize,

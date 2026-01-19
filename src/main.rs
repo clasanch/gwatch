@@ -1,12 +1,3 @@
-mod cli;
-mod config;
-mod diff_viewer;
-mod git_engine;
-mod review_state;
-mod types;
-mod ui;
-mod watcher;
-
 use anyhow::Result;
 use chrono::Utc;
 use crossterm::{
@@ -25,12 +16,12 @@ use tokio::sync::mpsc;
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber::{fmt, prelude::*, EnvFilter};
 
-use cli::Args;
-use config::Config;
-use git_engine::GitEngine;
-use types::{DiffMode, DisplayedEvent, FileChangeEvent};
-use ui::{draw_ui, handle_key_event, App};
-use watcher::FileWatcher;
+use gwatch::cli::Args;
+use gwatch::config::Config;
+use gwatch::git_engine::GitEngine;
+use gwatch::types::{DiffMode, DisplayedEvent, FileChangeEvent};
+use gwatch::ui::{draw_ui, handle_key_event, App};
+use gwatch::watcher::FileWatcher;
 
 fn setup_logging(_config: &Config, verbose: u8) -> Result<()> {
     let log_dir = Config::config_dir();
@@ -79,8 +70,6 @@ fn setup_terminal() -> Result<Terminal<CrosstermBackend<io::Stdout>>> {
     let mut stdout = stdout();
     execute!(stdout, EnterAlternateScreen)?;
 
-    // Enable keyboard enhancement to properly detect key press vs repeat/release
-    // This prevents key repeat events from flooding the event queue
     let _ = execute!(
         stdout,
         PushKeyboardEnhancementFlags(KeyboardEnhancementFlags::REPORT_EVENT_TYPES)
@@ -127,7 +116,7 @@ async fn main() -> Result<()> {
     let _watcher = FileWatcher::new(repo_root.clone(), &config.watcher, tx)?;
     let _config_watcher = setup_config_watcher(config_tx);
 
-    let review_state = review_state::ReviewState::load();
+    let review_state = gwatch::review_state::ReviewState::load();
     let mut terminal = setup_terminal()?;
     let mut app = App::new(config, repo_root.clone(), review_state);
 
@@ -202,7 +191,6 @@ async fn run_app(
 
         tokio::select! {
             _ = tokio::time::sleep(Duration::from_millis(16)) => {
-                // Drain all pending key events, only keep the last one to prevent queue buildup
                 let mut last_key: Option<crossterm::event::KeyEvent> = None;
                 while event::poll(Duration::from_millis(0))? {
                     if let Event::Key(key) = event::read()? {
@@ -211,7 +199,6 @@ async fn run_app(
                         }
                     }
                 }
-                // Process only the last key event
                 if let Some(key) = last_key {
                     handle_key_event(app, key)?;
                     if app.should_quit {

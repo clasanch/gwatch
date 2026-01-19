@@ -498,30 +498,32 @@ mod tests {
     fn test_app_hunk_navigation() {
         let mut app = test_app();
         // Add event with multiple hunks
-        let mut diff = FileDiff::default();
-        diff.hunks = vec![
-            DiffHunk {
-                old_start: 1,
-                old_count: 3,
-                new_start: 1,
-                new_count: 4,
-                lines: vec![],
-            },
-            DiffHunk {
-                old_start: 10,
-                old_count: 2,
-                new_start: 11,
-                new_count: 3,
-                lines: vec![],
-            },
-            DiffHunk {
-                old_start: 20,
-                old_count: 1,
-                new_start: 22,
-                new_count: 2,
-                lines: vec![],
-            },
-        ];
+        let diff = FileDiff {
+            hunks: vec![
+                DiffHunk {
+                    old_start: 1,
+                    old_count: 3,
+                    new_start: 1,
+                    new_count: 4,
+                    lines: vec![],
+                },
+                DiffHunk {
+                    old_start: 10,
+                    old_count: 2,
+                    new_start: 11,
+                    new_count: 3,
+                    lines: vec![],
+                },
+                DiffHunk {
+                    old_start: 20,
+                    old_count: 1,
+                    new_start: 22,
+                    new_count: 2,
+                    lines: vec![],
+                },
+            ],
+            ..Default::default()
+        };
         let event = DisplayedEvent {
             file_path: PathBuf::from("/test/file.rs"),
             relative_path: "file.rs".to_string(),

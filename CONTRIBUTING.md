@@ -28,6 +28,29 @@ This project and everyone participating in it is governed by the [Code of Conduc
 5. Make sure your code is formatted (`cargo fmt`).
 6. Run clippy to ensure no warnings (`cargo clippy -- -D warnings`).
 
+## Development Environment 
+
+Before contributing, set up the development environment: 
+
+1. **Install tools:** 
+   ```bash 
+   brew install lefthook 
+   cargo install cargo-llvm-cov cargo-audit cargo-deny 
+   rustup component add llvm-tools-preview 
+   ``` 
+
+2. **Enable git hooks:** 
+   ```bash 
+   lefthook install 
+   ``` 
+
+3. **Verify setup:** 
+   ```bash 
+   lefthook run pre-commit 
+   ``` 
+
+All commits must pass pre-commit hooks. All pushes must pass pre-push hooks including 85% test coverage. 
+
 ## Development Setup
 
 ### Requirements
