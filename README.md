@@ -2,7 +2,7 @@
 
 Real-time Git-powered directory monitor with line-by-line diff visualization.
 
-[![CI](https://github.com/csaltos/gwatch/actions/workflows/ci.yml/badge.svg)](https://github.com/csaltos/gwatch/actions/workflows/ci.yml)
+[![CI](https://github.com/clasanch/gwatch/actions/workflows/ci.yml/badge.svg)](https://github.com/clasanch/gwatch/actions/workflows/ci.yml)
 ![Rust](https://img.shields.io/badge/rust-stable-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
