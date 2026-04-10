@@ -25,7 +25,7 @@ notify-debouncer-mini = "0.7"
 git2 = "0.20"
 
 # Diff Engine
-similar = "2"
+similar = "3"
 
 # Async Runtime
 tokio = { version = "1", features = ["full"] }
